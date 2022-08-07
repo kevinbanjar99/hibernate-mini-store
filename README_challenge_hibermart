@@ -1,0 +1,63 @@
+Susunan query yang digunakan untuk membentuk database pada challenge_hibermart
+
+1.
+CREATE DATABASE challenge_hibermart;
+
+2.
+CREATE TABLE m_customer 
+(id SERIAL PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+address VARCHAR(100) NOT NULL,
+phone VARCHAR(15) NOT NULL,
+birthdate DATE NOT NULL,
+membership_status INT NOT NULL
+);
+
+3.
+CREATE TABLE m_product 
+(id SERIAL PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+product_price INT NOT NULL,
+stock INT NOT NULL,
+CONSTRAINT check_stock_must_be_whole CHECK (stock >= 0)
+);
+
+4.
+CREATE TABLE t_transaction
+(id SERIAL PRIMARY KEY,
+date DATE NOT NULL,
+customer_id INT REFERENCES m_customer(id),
+total_quantity INT NOT NULL,
+total_price INT NOT NULL
+);
+
+5.
+CREATE TABLE t_transaction_detail
+(id SERIAL PRIMARY KEY,
+transaction_id INT REFERENCES t_transaction(id),
+product_id INT REFERENCES m_product(id),
+current_product_price INT NOT NULL,
+quantity INT NOT NULL,
+subtotal INT NOT NULL
+);
+
+6.
+INSERT INTO m_customer (name,address,phone,birthdate,membership_status)
+VALUES ('Alpha', 'Brooklyn Ave 18th', '08129453645', '1999-10-10', 0),
+('Beta', 'Peaky St. 15th', '08129453645', '1999-10-10', 0),
+('Charlie', 'Lily Ave 10th', '08129456865', '1999-05-16', 1),
+('Delta', 'Birmingham Ave 2nd', '08178753645', '2000-01-11', 1),
+('Echo', 'Linemass Ave 25th', '081294577786', '2008-01-01', 0),
+('Foxtrot', 'NCR St. 18th', '08129989965', '1999-11-15', 0),
+('Golf', 'Apparel St. 18th', '081294345776', '1999-05-10', 1);
+
+7.
+INSERT INTO m_product (name, product_price, stock)
+VALUES ('Nuka-Cola',5000,85),
+('Nuka-Cola Quantum',20000,50),
+('Buff Jet',50000,20),
+('Vault-Tech Canteen',30000,60),
+('Stimpak',100000,50),
+('Wasteland Omelet',15000,30),
+('MRE',50000,100),
+('Iguana Soup',20000,20);
